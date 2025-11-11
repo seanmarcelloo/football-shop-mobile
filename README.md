@@ -1,4 +1,4 @@
-# Tugas 7 PBP Fasilkom UI
+# Tugas 7 
 
 Nama: Sean Marcello Maheron  
 NPM: 2406401792  
@@ -34,3 +34,37 @@ BuildContext adalah objek yang merepresentasikan posisi sebuah widget dalam stru
 6. Perbedaan hot reload dan hot restart  
 Hot reload digunakan untuk memperbarui tampilan aplikasi setelah ada perubahan kode tanpa menjalankan ulang program dari awal. Fitur ini mempertahankan state yang sudah ada, sehingga cocok untuk mempercepat pengembangan tampilan.  
 Hot restart menjalankan ulang seluruh aplikasi dari awal, termasuk fungsi main(). Semua data sementara atau state yang tersimpan akan hilang. Fitur ini digunakan ketika terjadi perubahan besar pada struktur kode atau ketika state sudah tidak konsisten.
+
+# Tugas 8
+ 1. Perbedaan antara `Navigator.push()` dan `Navigator.pushReplacement()`
+`Navigator.push()` digunakan untuk menambah halaman baru di atas halaman sebelumnya. Artinya, pengguna masih bisa kembali ke halaman sebelumnya menggunakan tombol “back”.  
+Sebaliknya, `Navigator.pushReplacement()` akan mengganti halaman saat ini dengan halaman baru, jadi halaman sebelumnya dihapus dari stack dan pengguna tidak bisa kembali ke sana.
+
+Di aplikasi Football Shop, saya menggunakan:
+- `Navigator.push()` saat berpindah dari halaman utama ke halaman detail produk (karena pengguna mungkin ingin kembali melihat daftar produk).  
+- `Navigator.pushReplacement()` saat berpindah ke halaman setelah form disubmit, misalnya setelah menambahkan produk baru, agar pengguna tidak bisa kembali ke form lama yang sudah disubmit.
+
+2. Pemanfaatan hierarchy widget seperti `Scaffold`, `AppBar`, dan `Drawer`
+Ketiga widget ini membantu menjaga konsistensi struktur halaman:
+- `Scaffold` menjadi kerangka utama tiap halaman, yang berisi `AppBar`, `Drawer`, dan `body`.
+- `AppBar` menampilkan judul halaman dan memberikan navigasi yang mudah di bagian atas.
+- `Drawer` digunakan sebagai menu samping untuk berpindah antarhalaman tanpa perlu tombol tambahan.
+
+Dengan kombinasi ini, semua halaman di Football Shop terlihat rapi dan memiliki tata letak yang seragam.
+
+3. Kelebihan menggunakan layout widget seperti `Padding`, `SingleChildScrollView`, dan `ListView`
+Ketiga widget ini berguna untuk mengatur tampilan form dan memastikan tampilannya responsif serta nyaman dibaca:
+- `Padding` memberi jarak antar elemen agar tampilan tidak terlalu rapat.
+- `SingleChildScrollView` memungkinkan halaman form bisa di-*scroll*, jadi tidak akan overflow di layar kecil.
+- `ListView` cocok untuk menampilkan daftar input atau item yang jumlahnya banyak dan bisa digulir.
+
+Contohnya di aplikasi saya, saat menampilkan form tambah produk, saya membungkus semua elemen dalam `SingleChildScrollView` dan `Padding` supaya pengguna tetap bisa mengisi form dengan nyaman, meski di layar kecil.
+
+4. Penyesuaian warna tema agar aplikasi memiliki identitas visual
+Untuk membuat aplikasi memiliki identitas visual yang konsisten, Flutter menyediakan sistem tema melalui properti `theme` di dalam `MaterialApp`. Ide utamanya adalah menentukan satu set warna dan gaya yang akan digunakan di seluruh halaman aplikasi, sehingga tampilan tidak berbeda-beda antarhalaman.
+
+Misalnya, jika *Football Shop* ingin menampilkan kesan yang kuat dan energik dengan warna merah serta kesan bersih dengan warna putih, maka warna merah bisa dijadikan warna utama (misalnya untuk AppBar dan tombol), sedangkan warna putih digunakan sebagai latar belakang dan warna teks.  
+Dengan begitu, pengguna akan langsung mengenali gaya khas aplikasi karena konsistensi warna yang digunakan di seluruh tampilan.
+
+Selain warna, tema juga bisa mencakup gaya huruf, bentuk tombol, dan warna teks agar seluruh elemen UI terasa selaras dan mencerminkan karakter brand toko.
+
