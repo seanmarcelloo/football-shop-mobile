@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:football_shop/widgets/left_drawer.dart';
+import 'package:football_shop/screens/productlist_form.dart';
 import 'package:football_shop/widgets/product_card.dart';
 
 class MyHomePage extends StatelessWidget {
@@ -13,6 +14,7 @@ class MyHomePage extends StatelessWidget {
     ItemHomepage("All Products", Icons.storefront, Colors.blue),
     ItemHomepage("My Products", Icons.inventory_2, Colors.green),
     ItemHomepage("Add Product", Icons.add_box, Colors.red),
+    ItemHomepage("Logout", Icons.logout, Colors.black),
   ];
 
   @override
@@ -21,6 +23,7 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
       // AppBar adalah bagian atas halaman yang menampilkan judul.
       appBar: AppBar(
+        // Judul aplikasi "Football News" dengan teks putih dan tebal.
         title: const Text(
           'FootyBall Shop',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
@@ -73,7 +76,7 @@ class MyHomePage extends StatelessWidget {
                     padding: const EdgeInsets.all(20),
                     crossAxisSpacing: 10,
                     mainAxisSpacing: 10,
-                    crossAxisCount: 3,
+                    crossAxisCount: 4,
                     // Agar grid menyesuaikan tinggi kontennya.
                     shrinkWrap: true,
 
