@@ -68,3 +68,42 @@ Dengan begitu, pengguna akan langsung mengenali gaya khas aplikasi karena konsis
 
 Selain warna, tema juga bisa mencakup gaya huruf, bentuk tombol, dan warna teks agar seluruh elemen UI terasa selaras dan mencerminkan karakter brand toko.
 
+# Tugas 9
+
+## Penjelasan Tugas Integrasi Django dan Flutter
+
+### 1. Pentingnya Model Dart
+Kita perlu membuat model Dart ketika mengambil atau mengirim data JSON karena model ini memberikan struktur yang jelas untuk data yang diterima atau dikirim. Dengan model, kita bisa memastikan tipe data sesuai, melakukan null-safety, dan mempermudah validasi. Jika kita langsung memetakan JSON menjadi `Map<String, dynamic>` tanpa model, kode menjadi rawan error: salah tipe data bisa terjadi, field yang tidak ada bisa menyebabkan crash, dan kode menjadi sulit untuk dipelihara karena tidak ada representasi objek yang konsisten.
+
+### 2. Fungsi http dan CookieRequest
+Package `http` digunakan untuk request HTTP biasa, baik GET maupun POST, tetapi tidak menyimpan session atau cookie secara otomatis. Sedangkan `CookieRequest` adalah package yang memudahkan pengelolaan session dan cookie secara otomatis, sehingga kita bisa tetap login di seluruh aplikasi Flutter. Perbedaan utama: `http` bersifat stateless dan setiap request harus mengirim kredensial manual jika dibutuhkan, sedangkan `CookieRequest` menyimpan session yang dibuat Django sehingga autentikasi menjadi persistent.
+
+### 3. Mengapa CookieRequest Dibagikan ke Semua Komponen
+Instance `CookieRequest` perlu dibagikan ke seluruh komponen Flutter menggunakan `Provider` agar semua halaman dapat menggunakan session yang sama. Tanpa ini, setiap halaman tidak akan mengetahui status login, sehingga user harus login ulang di setiap halaman atau request ke server akan gagal karena session tidak tersedia.
+
+### 4. Konfigurasi Konektivitas Flutter-Django
+Agar Flutter dapat berkomunikasi dengan Django, beberapa konfigurasi penting perlu dilakukan:
+- Menambahkan `10.0.2.2` pada `ALLOWED_HOSTS` Django agar emulator Android bisa mengakses server lokal.
+- Mengaktifkan CORS di Django agar request dari Flutter diterima.
+- Mengatur `SameSite=None` pada cookie agar cookie bisa dikirim lintas domain.
+- Menambahkan izin akses internet di `AndroidManifest.xml` agar aplikasi Flutter bisa melakukan request HTTP.  
+
+Jika konfigurasi ini tidak dilakukan dengan benar, Flutter tidak akan bisa mengambil data, login akan gagal, atau request server akan diblokir karena masalah CORS atau cookie.
+
+### 5. Mekanisme Pengiriman Data
+Mekanismenya dimulai dari input user di Flutter melalui form → dikirim ke Django via POST menggunakan `CookieRequest` → Django memvalidasi dan menyimpan data ke database → Django mengembalikan response JSON → Flutter menerima response → Flutter memetakan JSON ke model Dart → data ditampilkan di UI. Dengan alur ini, data dapat diambil dan ditampilkan dengan aman dan sesuai tipe.
+
+### 6. Mekanisme Autentikasi
+Proses autentikasi dimulai dari register atau login di Flutter. Saat login, username dan password dikirim ke endpoint Django. Django memeriksa kredensial dan jika valid, membuat session dan mengirim cookie session ke Flutter. Flutter menyimpan session ini menggunakan `CookieRequest`, sehingga user dianggap login di seluruh aplikasi. Saat logout, session dihapus dan user diarahkan kembali ke halaman login. Dengan cara ini, alur autentikasi aman dan mudah dikelola.
+
+### 7. Implementasi Checklist Step-by-Step
+1. Jalankan Django dan pastikan endpoint JSON berfungsi.  
+2. Buat model Dart (`ProductEntry`) sesuai model Django.  
+3. Buat halaman registrasi Flutter dan hubungkan ke endpoint Django.  
+4. Buat halaman login Flutter menggunakan `CookieRequest` untuk menyimpan session.  
+5. Ambil data JSON dari Django dan ubah menjadi list model Dart.  
+6. Tampilkan daftar item di Flutter menggunakan `ListView`, menampilkan name, price, description, thumbnail, category, dan is_featured.  
+7. Buat halaman detail untuk setiap item, menampilkan seluruh atribut, termasuk thumbnail dan merchant.  
+8. Tambahkan tombol kembali dari halaman detail ke daftar item.  
+9. Implementasikan filter item agar hanya menampilkan item milik user yang login.  
+10. Uji seluruh alur dari login → daftar → detail → filter → logout agar memastikan integrasi berjalan lancar.  
